@@ -1,0 +1,7 @@
+Flask
+Flask-WTF
+WTForms
+icalendar
+qrcode[pil]
+Pillow
+pytz
