@@ -58,6 +58,4 @@ This project includes a `render.yaml` for easy deployment on [Render](https://re
 ## 👨‍💻 Author
 
 **Daniel Sich**
-*Information Systems Student at Technical University of Munich (TUM)*
-
 built as a personal utility to simplify event sharing.
