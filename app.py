@@ -149,7 +149,7 @@ def index():
 
             event = Event()
             event.add('uid', str(uuid.uuid4()))
-            event.add('dtstamp', datetime.utcnow())
+            event.add('dtstamp', datetime.now(pytz.utc))
             event.add('dtstart', start_utc)
             event.add('dtend', end_utc)
             event.add('summary', title)

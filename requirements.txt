@@ -5,3 +5,4 @@ icalendar
 qrcode[pil]
 Pillow
 pytz
+gunicorn
