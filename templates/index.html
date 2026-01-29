@@ -8,21 +8,37 @@
   <style>
     :root {
       color-scheme: light dark;
+      --bg-color: #f4f4f4;
+      --card-bg: #fff;
+      --text-color: #333;
+      --heading-color: #007BFF;
+      --border-color: #ccc;
+      --input-bg: #fff;
     }
 
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      --bg-color: #1a1a1a;
+      --card-bg: #2d2d2d;
+      --text-color: #e0e0e0;
+      --heading-color: #4da3ff;
+      --border-color: #444;
+      --input-bg: #333;
     }
 
     h1 {
-      color: #007BFF;
+      color: var(--heading-color);
     }
 
     form {
-      background: #fff;
+      background: var(--card-bg);
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -41,9 +57,11 @@
       width: 100%;
       padding: 8px;
       margin: 5px 0 10px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border-color);
       border-radius: 6px;
       box-sizing: border-box;
+      background-color: var(--input-bg);
+      color: var(--text-color);
     }
 
     input[type="radio"] {
@@ -95,7 +113,7 @@
     }
 
     .card {
-      background: #fff;
+      background: var(--card-bg);
       padding: 16px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
@@ -108,7 +126,7 @@
 
     .small {
       font-size: 0.9em;
-      color: #666;
+      color: #888;
     }
 
     .grid {
@@ -118,7 +136,7 @@
     }
 
     .section {
-      border: 1px dashed #ddd;
+      border: 1px dashed var(--border-color);
       padding: 12px;
       border-radius: 8px;
     }
@@ -135,10 +153,48 @@
       align-items: center;
       gap: 6px;
     }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 40px;
+      color: var(--text-color);
+      padding: 5px;
+      transition: transform 0.2s;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.9em;
+    }
+
+    footer a {
+      color: var(--heading-color);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 
 <body>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+    <span class="icon">🌓</span>
+  </button>
+
   <h1>Create an Event</h1>
 
   <form method="POST" novalidate>
@@ -277,6 +333,13 @@
   </div>
   {% endif %}
 
+  <footer>
+    <p>
+      Source code available on
+      <a href="https://github.com/danielsich/EventQRCodes" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </p>
+  </footer>
+
   <script>
     function syncMode() {
       const modeDuration = document.getElementById('mode_duration').checked;
@@ -297,6 +360,26 @@
 
     // On load (including after validation errors), match the current selection
     window.addEventListener('DOMContentLoaded', syncMode);
+
+    // Dark Mode Logic
+    const toggleBtn = document.getElementById('theme-toggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function setTheme(isDark) {
+      document.body.classList.toggle('dark-mode', isDark);
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    // Initialize theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark.matches)) {
+      setTheme(true);
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const isDark = !document.body.classList.contains('dark-mode');
+      setTheme(isDark);
+    });
   </script>
 </body>
 
