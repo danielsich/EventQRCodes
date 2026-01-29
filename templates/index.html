@@ -1,38 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Event QR Code Generator</title>
   <style>
-    :root { color-scheme: light dark; }
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; padding: 20px; }
-    h1 { color: #007BFF; }
-    form { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 720px; }
-    label { display: block; margin: 10px 0 4px; font-weight: bold; }
-    input[type="text"], input[type="number"], input[type="date"] {
-      width: 100%; padding: 8px; margin: 5px 0 10px;
-      border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;
+    :root {
+      color-scheme: light dark;
     }
-    input[type="radio"] { margin-right: 6px; }
-    button, input[type="submit"] {
-      background: #007BFF; color: #fff; padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer;
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
     }
-    button:hover, input[type="submit"]:hover { opacity: .9; }
-    .qr-code { margin-top: 24px; text-align: center; }
-    .error { color: #d00; margin-top: 8px; }
-    .field-error { color: #d00; font-size: 0.9em; margin-top: -6px; margin-bottom: 6px; }
-    .messages { max-width: 720px; margin-top: 10px; }
-    .results { margin-top: 24px; display: grid; gap: 16px; max-width: 820px; }
-    .card { background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.08); }
-    .code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; white-space: pre-wrap; }
-    .small { font-size: 0.9em; color: #666; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-    .section { border: 1px dashed #ddd; padding: 12px; border-radius: 8px; }
-    .radios { display: flex; gap: 20px; align-items: center; margin-top: 4px; }
-    .radio-item { display: flex; align-items: center; gap: 6px; }
+
+    h1 {
+      color: #007BFF;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 720px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 4px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    input[type="radio"] {
+      margin-right: 6px;
+    }
+
+    button,
+    input[type="submit"] {
+      background: #007BFF;
+      color: #fff;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover,
+    input[type="submit"]:hover {
+      opacity: .9;
+    }
+
+    .qr-code {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .error {
+      color: #d00;
+      margin-top: 8px;
+    }
+
+    .field-error {
+      color: #d00;
+      font-size: 0.9em;
+      margin-top: -6px;
+      margin-bottom: 6px;
+    }
+
+    .messages {
+      max-width: 720px;
+      margin-top: 10px;
+    }
+
+    .results {
+      margin-top: 24px;
+      display: grid;
+      gap: 16px;
+      max-width: 820px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      white-space: pre-wrap;
+    }
+
+    .small {
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .section {
+      border: 1px dashed #ddd;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .radios {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
   </style>
 </head>
+
 <body>
   <h1>Create an Event</h1>
 
@@ -89,23 +194,13 @@
       <!-- Render the radio group ONCE with stable IDs -->
       <div class="radios" role="radiogroup" aria-label="End mode">
         <div class="radio-item">
-          <input
-            type="radio"
-            name="{{ form.mode.name }}"
-            id="mode_duration"
-            value="duration"
-            {% if form.mode.data == 'duration' or not form.mode.data %}checked{% endif %}
-          />
+          <input type="radio" name="{{ form.mode.name }}" id="mode_duration" value="duration" {% if
+            form.mode.data=='duration' or not form.mode.data %}checked{% endif %} />
           <label for="mode_duration">By duration</label>
         </div>
         <div class="radio-item">
-          <input
-            type="radio"
-            name="{{ form.mode.name }}"
-            id="mode_end"
-            value="end"
-            {% if form.mode.data == 'end' %}checked{% endif %}
-          />
+          <input type="radio" name="{{ form.mode.name }}" id="mode_end" value="end" {% if form.mode.data=='end'
+            %}checked{% endif %} />
           <label for="mode_end">By end date/time</label>
         </div>
       </div>
@@ -114,12 +209,14 @@
         <div>
           <label for="{{ form.duration_hours.id }}">{{ form.duration_hours.label }}</label>
           {{ form.duration_hours(id=form.duration_hours.id) }}
-          {% if form.duration_hours.errors %}<div class="field-error">{{ form.duration_hours.errors[0] }}</div>{% endif %}
+          {% if form.duration_hours.errors %}<div class="field-error">{{ form.duration_hours.errors[0] }}</div>{% endif
+          %}
         </div>
         <div>
           <label for="{{ form.duration_minutes.id }}">{{ form.duration_minutes.label }}</label>
           {{ form.duration_minutes(id=form.duration_minutes.id) }}
-          {% if form.duration_minutes.errors %}<div class="field-error">{{ form.duration_minutes.errors[0] }}</div>{% endif %}
+          {% if form.duration_minutes.errors %}<div class="field-error">{{ form.duration_minutes.errors[0] }}</div>{%
+          endif %}
         </div>
       </div>
 
@@ -147,40 +244,37 @@
 
   <div class="messages">
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <p class="error">{{ message }}</p>
-        {% endfor %}
-      {% endif %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <p class="error">{{ message }}</p>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
   </div>
 
   {% if qr_code %}
-    <div class="results">
-      <div class="card qr-code">
-        <h2>Your Event QR Code</h2>
-        <img src="data:image/png;base64,{{ qr_code }}" alt="Event QR Code">
-        <div class="small">Scan with your phone’s calendar app.</div>
-      </div>
+  <div class="results">
+    <div class="card qr-code">
+      <h2>Your Event QR Code</h2>
+      <img src="data:image/png;base64,{{ qr_code }}" alt="Event QR Code">
+      <div class="small">Scan to store event in your calendar</div>
+    </div>
 
-      {% if ics_b64 %}
-        <div class="card">
-          <h3>Download .ics (optional)</h3>
-          <a
-            download="event.ics"
-            href="data:text/calendar;charset=utf-8;base64,{{ ics_b64 }}"
-          >
-            <button type="button">Download event.ics</button>
-          </a>
-          {% if ics_content %}
-            <details style="margin-top:10px;">
-              <summary class="small">Show ICS content</summary>
-              <pre class="code">{{ ics_content }}</pre>
-            </details>
-          {% endif %}
-        </div>
+    {% if ics_b64 %}
+    <div class="card">
+      <h3>Download .ics (optional)</h3>
+      <a download="event.ics" href="data:text/calendar;charset=utf-8;base64,{{ ics_b64 }}">
+        <button type="button">Download event.ics</button>
+      </a>
+      {% if ics_content %}
+      <details style="margin-top:10px;">
+        <summary class="small">Show ICS content</summary>
+        <pre class="code">{{ ics_content }}</pre>
+      </details>
       {% endif %}
     </div>
+    {% endif %}
+  </div>
   {% endif %}
 
   <script>
@@ -205,4 +299,5 @@
     window.addEventListener('DOMContentLoaded', syncMode);
   </script>
 </body>
+
 </html>
