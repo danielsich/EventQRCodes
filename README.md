@@ -4,6 +4,8 @@ A lightweight web application that generates QR codes for calendar events (ICS).
 
 **Live Demo:** [https://qr.danielsi.ch](https://qr.danielsi.ch)
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danielsich/EventQRCodes)
+
 ## 🚀 Features
 
 - **Instant Generation**: Create calendar events with a Title, Description, Location, and Time.
