@@ -1,8 +1,9 @@
-Flask
-Flask-WTF
-WTForms
+fastapi
+uvicorn
+python-multipart
+jinja2
+wtforms
 icalendar
 qrcode[pil]
 Pillow
 pytz
-gunicorn
